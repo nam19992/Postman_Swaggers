@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "6c7e5042-f490-47ee-841a-1f8461f15136",
+		"_postman_id": "c126c15e-a49e-4472-8b00-9fc0db34de37",
 		"name": "reqres",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18539276"
+		"_exporter_id": "19999044"
 	},
 	"item": [
 		{
@@ -15,6 +15,10 @@
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Page test\", function () {\r",
+							"    pm.expect(pm.response.json().page).to.eql(2);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -37,7 +41,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://reqres.in/api/users?page = 2",
+					"raw": "https://reqres.in/api/users?page=2",
 					"protocol": "https",
 					"host": [
 						"reqres",
@@ -49,8 +53,8 @@
 					],
 					"query": [
 						{
-							"key": "page ",
-							"value": " 2"
+							"key": "page",
+							"value": "2"
 						}
 					]
 				}
@@ -58,7 +62,7 @@
 			"response": []
 		},
 		{
-			"name": "Single User",
+			"name": "Single user",
 			"event": [
 				{
 					"listen": "test",
@@ -107,6 +111,14 @@
 						"exec": [
 							"pm.test(\"Status code is 404\", function () {\r",
 							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validation non-existen user\", function () {\r",
+							"    pm.response.to.have.body(\r",
+							"        {\r",
+							"            \"Error\": \"User is not found\"\r",
+							"        }\r",
+							"    );\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -242,7 +254,7 @@
 			"response": []
 		},
 		{
-			"name": "Create",
+			"name": "Create user",
 			"event": [
 				{
 					"listen": "test",
@@ -285,7 +297,20 @@
 			"response": []
 		},
 		{
-			"name": "Create поля не заполены",
+			"name": "Create user with empty name and job",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -314,7 +339,20 @@
 			"response": []
 		},
 		{
-			"name": "UpDate",
+			"name": "UpDate user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -344,14 +382,14 @@
 			"response": []
 		},
 		{
-			"name": "UpDate поля не заполнены",
+			"name": "UpDate user with empty name and job",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -363,7 +401,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"\",\r\n    \"job\": null\r\n}",
+					"raw": "{\r\n    \"name\": null,\r\n    \"job\": \"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -387,7 +425,7 @@
 			"response": []
 		},
 		{
-			"name": "UpDate",
+			"name": "UpDate user name",
 			"event": [
 				{
 					"listen": "test",
@@ -395,7 +433,15 @@
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
-							"});"
+							"});\r",
+							"\r",
+							"pm.test(\"Body is correct\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"name\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"morpheus1\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"job\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"zion resident\");\r",
+							"});\r",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -406,7 +452,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"zion resident\"\r\n}",
+					"raw": "{\r\n    \"name\": \"morpheus1\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -430,7 +476,7 @@
 			"response": []
 		},
 		{
-			"name": "Delete",
+			"name": "Delete user",
 			"event": [
 				{
 					"listen": "test",
@@ -477,6 +523,8 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"token\",pm.response.json().token)\r",
 							""
 						],
 						"type": "text/javascript"
@@ -511,7 +559,7 @@
 			"response": []
 		},
 		{
-			"name": "Register - Succesful поля не заполнены",
+			"name": "Register without email",
 			"event": [
 				{
 					"listen": "test",
@@ -520,8 +568,13 @@
 							"pm.test(\"Status code is 400\", function () {\r",
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
-							"pm.test(\"Body matches string\", function () {\r",
-							"    pm.expect(pm.response.text()).to.include(\"Missing email or username\");\r",
+							"\r",
+							"pm.test(\"Body is correct\", function () {\r",
+							"    pm.response.to.have.body(\r",
+							"        {\r",
+							"            \"error\": \"Missing email or username\"\r",
+							"        }\r",
+							"    );\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -556,7 +609,7 @@
 			"response": []
 		},
 		{
-			"name": "Register - unsuccessful",
+			"name": "Register without password",
 			"event": [
 				{
 					"listen": "test",
@@ -565,8 +618,12 @@
 							"pm.test(\"Status code is 400\", function () {\r",
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
-							"pm.test(\"Body matches string\", function () {\r",
-							"    pm.expect(pm.response.text()).to.include(\"Missing password\");\r",
+							"pm.test(\"Body is correct\", function () {\r",
+							"    pm.response.to.have.body(\r",
+							"        {\r",
+							"            \"error\": \"Missing password\"\r",
+							"        }\r",
+							"    );\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -601,7 +658,7 @@
 			"response": []
 		},
 		{
-			"name": "Register - unsuccessful Copy",
+			"name": "Register with not correct email",
 			"event": [
 				{
 					"listen": "test",
@@ -610,8 +667,12 @@
 							"pm.test(\"Status code is 400\", function () {\r",
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
-							"pm.test(\"Body matches string\", function () {\r",
-							"    pm.expect(pm.response.text()).to.include(\"Note: Only defined users succeed registration\");\r",
+							"pm.test(\"Body is correct\", function () {\r",
+							"    pm.response.to.have.body(\r",
+							"        {\r",
+							"            \"error\": \"Note: Only defined users succeed registration\"\r",
+							"        }\r",
+							"    );\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -654,7 +715,9 @@
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
-							"});"
+							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"token\", pm.response.json().token)"
 						],
 						"type": "text/javascript"
 					}
@@ -688,7 +751,7 @@
 			"response": []
 		},
 		{
-			"name": "Login - successful email не заполнен",
+			"name": "Login  without email",
 			"event": [
 				{
 					"listen": "test",
@@ -698,7 +761,11 @@
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"pm.test(\"Body matches string\", function () {\r",
-							"    pm.expect(pm.response.text()).to.include(\"Missing email or username\");\r",
+							"    pm.response.to.have.body(\r",
+							"        {\r",
+							"            \"error\": \"Missing email or username\"\r",
+							"        }\r",
+							"    );\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -733,7 +800,7 @@
 			"response": []
 		},
 		{
-			"name": "Login - unsuccessful",
+			"name": "Login without password",
 			"event": [
 				{
 					"listen": "test",
@@ -742,8 +809,12 @@
 							"pm.test(\"Status code is 400\", function () {\r",
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
-							"pm.test(\"Body matches string\", function () {\r",
-							"    pm.expect(pm.response.text()).to.include(\"Missing password\");\r",
+							"pm.test(\"Body is correct\", function () {\r",
+							"    pm.response.to.have.body(\r",
+							"        {\r",
+							"            \"error\": \"Missing password\"\r",
+							"        }\r",
+							"    );\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -778,17 +849,23 @@
 			"response": []
 		},
 		{
-			"name": "Login - unsuccessful авторизация не существующего пользователя",
+			"name": "Login user not found",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
+							"//нужно компактнее записывать название кейса\r",
 							"pm.test(\"Status code is 400\", function () {\r",
 							"    pm.response.to.have.status(400);\r",
 							"});\r",
-							"pm.test(\"Body matches string\", function () {\r",
-							"    pm.expect(pm.response.text()).to.include(\"user not found\");\r",
+							"\r",
+							"pm.test(\"Body is correct\", function () {\r",
+							"    pm.response.to.have.body(\r",
+							"        {\r",
+							"            \"error\": \"user not found\"\r",
+							"        }\r",
+							"    );\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -831,6 +908,10 @@
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is above than 3000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.above(3000);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -853,7 +934,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://reqres.in/api/users?delay = 3",
+					"raw": "https://reqres.in/api/users?delay=3",
 					"protocol": "https",
 					"host": [
 						"reqres",
@@ -865,13 +946,19 @@
 					],
 					"query": [
 						{
-							"key": "delay ",
-							"value": " 3"
+							"key": "delay",
+							"value": "3"
 						}
 					]
 				}
 			},
 			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
 		}
 	]
 }
